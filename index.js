@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/node-reac
 app.use(bodyParser.json());
 
 //IMPORT ROUTES
-require('./routes/productRoutes')(app);
+// require('./routes/productRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -23,10 +23,18 @@ if (process.env.NODE_ENV === 'production') {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
 
+
 }
 
 const PORT = process.env.PORT || 5000;
+
+app.get('/test', (req, res) =>{
+  var wd = require("word-definition");
+  wd.getDef("keyboard", "en", null, function(definition) {
+     res.send(definition)
+  });
+})
+
 app.listen(PORT, () => {
-  
   console.log(`app running on port ${PORT}`)
 });
